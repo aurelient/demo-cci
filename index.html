@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <style>
+      body {
+        margin: 1em;
+        font: 1.2rem/1.4 Georgia, serif;
+      }
+      .citation {
+        margin: 0;
+        background: #eee;
+        padding: 1em;
+        border-radius: 1em;
+      }
+      .citation figcaption,
+      .citation blockquote {
+        margin: 1em;
+      }
+    </style>
+    <script type="text/javascript">
+      function loadQuote() {
+        fetch("https://api.whatdoestrumpthink.com/api/v1/quotes/random")
+          .then(function (response) {
+            if (response.status !== 200) {
+              console.log(
+                "Looks like there was a problem. Status Code: " +
+                  response.status
+              );
+              return;
+            }
+
+            // Examine the text in the response
+            response.json().then(function (data) {
+              console.log(data.nlp_attributes.quote_structure);
+              window.apidata = data;
+              document.getElementsByClassName("citation")[0].innerHTML =
+                data.message;
+            });
+          })
+          .catch(function (err) {
+            console.log("Fetch Error :-S", err);
+          });
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Fetch demo 2</h1>
+
+    <button onclick="loadQuote()">load quote</button>
+
+    <h2>Below is a quote</h2>
+
+    <blockquote class="citation"></blockquote>
+  </body>
+</html>
